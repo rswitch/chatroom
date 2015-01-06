@@ -3,8 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var mime = require('mime');
 
-var chatServer = ('./lib/chat_server');
-chatServer.listen(server);
+
 
 var cache = {};
 
@@ -24,6 +23,7 @@ function sendFile(response, filePath, fileContents) {
 function serveStatic(response, cache, absPath) {
     console.log('Serving: ' + absPath);
     if (cache[absPath]) {
+        console.log('From cache');
         sendFile(response, absPath, cache[absPath]);
     } else {
         fs.exists(absPath, function(exists) {
@@ -56,8 +56,11 @@ var server = http.createServer(function(request, response) {
     serveStatic(response, cache, absPath);
 });
 
-server.listen(13000, function() {
+server.listen(3000, function() {
     console.log("Server listening on port 13000");
 });
+
+var chatServer = require ('./lib/chat_server');
+chatServer.listen(server);
 
 
